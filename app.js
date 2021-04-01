@@ -5,7 +5,7 @@ const app = express();
 const WebSocketServer = require('ws').Server;
 const server = require('http').createServer(app);
 const wss = new WebSocketServer({ server });
-const port = 3000;
+const port = 8080;
 
 // Serve js files
 app.use('/js', express.static(path.join(__dirname, 'ui/js/')));
@@ -17,9 +17,24 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/ui/html/index.html'));
 });
 
+const greetings = ["hi", "hello"];
+const nameQuestions = ["what's your name?", "what's your name", "what is your name?", "what is your name"];
 
 
 function handleQuery(query, cb) {
+    const str = query.toLowerCase().trim();
+    if (greetings.indexOf(str) !== -1) {
+      cb("Hi!");
+      return;
+    }
+    if (nameQuestions.indexOf(str) !== -1) {
+      cb("My name is Cheap Siri!");
+      return;
+    }
+    if ("How old are you?" === str) {
+      cb("That's a RUDE question.");
+      return;
+    }
     cb('Awesome');
 }
 
